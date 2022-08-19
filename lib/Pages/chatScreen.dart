@@ -10,7 +10,6 @@ import 'package:intl/intl.dart';
 import '../Models/ChatRoomModel.dart';
 import '../Models/MessageModel.dart';
 import '../Models/UserModels.dart';
-import '../Widgets/triangleChatWidget.dart';
 import '../main.dart';
 
 class ChatScreen extends StatefulWidget {
@@ -36,7 +35,9 @@ class _ChatScreenState extends State<ChatScreen> {
 
   User? _auth = FirebaseAuth.instance.currentUser;
 
+
   TextEditingController controller = TextEditingController();
+
   void sendMessage() async {
     String msg = controller.text.trim();
     if (msg != null) {

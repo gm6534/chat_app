@@ -1,161 +1,78 @@
-//
-//
-// import 'dart:io';
-//
-// import 'package:flutter/cupertino.dart';
 // import 'package:flutter/material.dart';
-// import 'package:image_cropper/image_cropper.dart';
-// import 'package:image_picker/image_picker.dart';
+// import 'package:flutter_quill/flutter_quill.dart';
 //
-// class CompleteProfileScreen extends StatefulWidget {
-//   const CompleteProfileScreen({Key? key}) : super(key: key);
+// class ToolBar extends StatefulWidget {
+//   const ToolBar({Key? key}) : super(key: key);
 //
 //   @override
-//   State<CompleteProfileScreen> createState() => _CompleteProfileScreenState();
+//   State<ToolBar> createState() => _ToolBarState();
 // }
 //
-// class _CompleteProfileScreenState extends State<CompleteProfileScreen> {
+// QuillController _controller = QuillController.basic();
 //
-//   File? imageFile;
-//
-//   TextEditingController fullNameController = TextEditingController();
-//   TextEditingController emailController = TextEditingController();
-//   TextEditingController numberController = TextEditingController();
-//   TextEditingController addressController = TextEditingController();
-//
-//
-//   void selectImage(ImageSource source) async{
-//    XFile? pickedFile = await ImagePicker().pickImage(source: source);
-//
-//    if(pickedFile != null){
-//      cropImage(pickedFile);
-//    }
-//   }
-//
-//   void cropImage(XFile file) async{
-//   File? croppedImage =  (await ImageCropper().cropImage(
-//       sourcePath: file.path,
-//       aspectRatio: CropAspectRatio(ratioX: 1, ratioY: 1),
-//       compressQuality: 20
-//   )) as File?;
-//
-//   if(croppedImage != null){
-//     setState(() {
-//       imageFile = croppedImage;
-//     });
-//   }
-//   }
-//
-//
-//   void showPhotoOptions() {
-//     showDialog(context: context, builder: (context)
-//     {
-//       return AlertDialog(
-//         title: Text("Select Profile Image"),
-//         content: Column(
-//           mainAxisSize: MainAxisSize.min,
-//           children: [
-//             ListTile(
-//               onTap: (){
-//                 Navigator.pop(context);
-//                 selectImage(ImageSource.gallery);
-//               },
-//               leading: Icon(Icons.photo_album),
-//               title: Text("Select From Gallery"),
-//             ),
-//             ListTile(
-//               onTap: (){
-//                 Navigator.pop(context);
-//                 selectImage(ImageSource.camera);
-//               },
-//               leading: Icon(Icons.camera_alt),
-//               title: Text("Take a Photo"),
-//             )
-//           ],
-//         ),
-//
-//       );
-//     });
-//   }
-//
-//
+// class _ToolBarState extends State<ToolBar> {
 //   @override
 //   Widget build(BuildContext context) {
 //     return Scaffold(
-//       appBar: AppBar(
-//         title: Text("Profile"),
-//         centerTitle: true,
-//       ),
+//
 //       body: SafeArea(
-//           child: Container(
-//             child: Padding(
-//               padding: const EdgeInsets.symmetric(
-//                 horizontal: 40
-//               ),
-//               child: ListView(
-//                 children: [
-//                   SizedBox(height: 30,),
-//                   CupertinoButton(
-//                     onPressed: () {
-//                       showPhotoOptions();
-//                     },
-//                     child: CircleAvatar(
-//                       radius: 60,
-//                       backgroundImage: (imageFile != null) ? FileImage (imageFile!) : null,
-//                       child: (imageFile == null) ? Icon(Icons.person, size: 60,) : null,
+//         child: Padding(
+//           padding: const EdgeInsets.all(10.0),
+//           child: Column(
+//             children: [
+//
+//               Container(
+//                 height: 300,
+//                 decoration: BoxDecoration(border: Border.all(width: 1.5),
+//                 borderRadius: BorderRadius.only(topRight: Radius.circular(20), bottomLeft: Radius.circular(20))
+//                 ),
+//                 child: Column(
+//                   children: [
+//                     SizedBox(height: 15,),
+//                     QuillToolbar.basic(
+//                       controller: _controller,
+//                         // showUnderLineButton: false,
+//                         showStrikeThrough: false,
+//                         showColorButton: false,
+//                         // showBackgroundColorButton: false,
+//                         showListCheck: false,
+//                         showIndent: false,
+//                         showUndo: false,
+//                         showRedo: false,
+//                         showFontFamily: false,
+//                         showFontSize: false,
+//                         showImageButton: false,
+//                         showVideoButton: false,
+//                         showQuote: false,
+//                         showSearchButton: false,
+//                         showAlignmentButtons: true,
+//                         showClearFormat: false,
+//                         showLink: false,
+//                       toolbarSectionSpacing: 1,
+//                       toolbarIconAlignment: WrapAlignment.center,
+//                       // toolbarIconSize: 15,
 //                     ),
-//                   ),
-//                   SizedBox(height: 30,),
-//                   Form(
-//                       child: Column(
-//                         children: [
-//                           TextFormField(
-//                             keyboardType: TextInputType.name,
-//                             decoration: InputDecoration(hintText: "Enter Full Name", border: OutlineInputBorder(), labelText: "Name", prefixIcon: Icon(Icons.person)),
-//                             validator:(val){
-//                               if (val== null || val==""){
-//                                 return "Required*";
-//                               }
-//                               else{
-//                                 return null;
-//                               }
-//                             },
+//                     Divider(),
+//                     Scrollbar(
+//                       child: Container(
+//                         height: 194,
+//                         child: Padding(
+//                           padding: const EdgeInsets.all(8.0),
+//                           child: QuillEditor.basic(
+//                             controller: _controller,
+//                             readOnly: false, // true for view only mode
 //                           ),
-//                           SizedBox(height: 15,),
-//                           TextFormField(
-//                             keyboardType: TextInputType.emailAddress,
-//                             decoration: InputDecoration(hintText: "Enter Email", border: OutlineInputBorder(), labelText: "Email", prefixIcon: Icon(Icons.alternate_email_outlined)),
-//                             validator:(val){
-//                               if (val== null || val==""){
-//                                 return "Required*";
-//                               }
-//                               else{
-//                                 return null;
-//                               }
-//                             },
-//                           ),
-//                           SizedBox(height: 15,),
-//                           TextFormField(
-//                             keyboardType: TextInputType.phone,
-//                             decoration: InputDecoration(hintText: "Enter Mobile Number", border: OutlineInputBorder(), labelText: "Mobile", prefixIcon: Icon(Icons.phone)),
-//                           ),
-//                           SizedBox(height: 15,),
-//                           TextFormField(
-//                             decoration: InputDecoration(hintText: "Enter Address", border: OutlineInputBorder(), labelText: "Address", prefixIcon: Icon(Icons.location_on_sharp)),
-//
-//                           ),
-//                         ],
-//                       )),
-//                   SizedBox(height: 30,),
-//                   CupertinoButton(onPressed: (){},
-//                       color: Colors.purple,
-//                       child: Text("Submit", style: TextStyle(fontWeight: FontWeight.bold),)
-//                   )
-//
-//                 ],
+//                         ),
+//                       ),
+//                     )
+//                   ],
+//                 ),
 //               ),
-//             ),
-//           )),
+//             ],
+//           ),
+//         ),
+//       )
 //     );
 //   }
 // }
+//

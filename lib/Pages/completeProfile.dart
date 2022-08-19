@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:chat_app/Widgets/Toolbar.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -73,6 +74,8 @@ class _CompleteProfileState extends State<CompleteProfile> {
     return Scaffold(
       appBar: AppBar(
         elevation: 0,
+        title: Text("Profile"),
+        centerTitle: true,
       ),
       body: Padding(
         padding: const EdgeInsets.all(16),
@@ -103,7 +106,7 @@ class _CompleteProfileState extends State<CompleteProfile> {
               TextFormField(
                 controller: fullNamecontroller,
                 decoration: const InputDecoration(
-                    prefixIcon: Icon(Icons.person), hintText: "Full Name"),
+                    prefixIcon: Icon(Icons.person), hintText: "Type Full Name", labelText: "Name", border: OutlineInputBorder()),
               ),
               const SizedBox(
                 height: 12,
@@ -119,7 +122,7 @@ class _CompleteProfileState extends State<CompleteProfile> {
               TextFormField(
                 controller: phoneController,
                 decoration: const InputDecoration(
-                    prefixIcon: Icon(Icons.phone), hintText: "Phone"),
+                    prefixIcon: Icon(Icons.phone), hintText: "Type Mobile Number", labelText: "Phone", border: OutlineInputBorder()),
               ),
               const SizedBox(
                 height: 12,
@@ -127,16 +130,24 @@ class _CompleteProfileState extends State<CompleteProfile> {
               TextFormField(
                 controller: addressController,
                 decoration: const InputDecoration(
-                    prefixIcon: Icon(Icons.place), hintText: "address"),
+                    prefixIcon: Icon(Icons.place), hintText: "Type Address", labelText: "Place", border: OutlineInputBorder()),
+
               ),
               const SizedBox(
-                height: 12,
+                height: 20,
               ),
-              const SizedBox(
-                height: 24,
-              ),
-              const SizedBox(
-                height: 8,
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text("BIO", style: TextStyle(fontWeight: FontWeight.bold, color: Colors.purple, fontSize: 20,),),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  SizedBox(
+                    height: 250,
+                    child: ToolBarWidget(),
+                  ),
+                ],
               ),
               SizedBox(
                   width: MediaQuery.of(context).size.width,
@@ -146,7 +157,7 @@ class _CompleteProfileState extends State<CompleteProfile> {
                       },
                       child: const Text("Update"))),
               const SizedBox(
-                height: 8,
+                height: 30,
               ),
             ],
           ),

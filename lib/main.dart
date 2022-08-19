@@ -9,6 +9,8 @@ import 'Models/FirebaseHelper.dart';
 import 'Models/UserModels.dart';
 import 'Pages/homeScreen.dart';
 import 'Pages/login.dart';
+import 'Test/Testing.dart';
+import 'Widgets/Toolbar.dart';
 
 var uuid = Uuid();
 
@@ -52,7 +54,9 @@ class LoggedIn extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Flutter ChatApp',
       theme: ThemeData(primarySwatch: Colors.purple),
-      home: HomeScreen(user: user, userModel: userModel),
+      home:
+      // ToolBar()
+      HomeScreen(user: user, userModel: userModel),
     );
   }
 }
