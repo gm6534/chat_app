@@ -150,7 +150,8 @@ class _CompleteProfileState extends State<CompleteProfile> {
                 ],
               ),
               SizedBox(
-                  width: MediaQuery.of(context).size.width,
+                  width: MediaQuery.of(context).size.width*0.6,
+                  height: 50,
                   child: ElevatedButton(
                       onPressed: () {
                         checkValues();
