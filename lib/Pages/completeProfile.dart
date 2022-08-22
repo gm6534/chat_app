@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:chat_app/Widgets/ProgressIndicater.dart';
 import 'package:chat_app/Widgets/Toolbar.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -30,12 +31,15 @@ class _CompleteProfileState extends State<CompleteProfile> {
   TextEditingController addressController = TextEditingController();
   TextEditingController phoneController = TextEditingController();
 
-  checkValues() {
-    if (fullNamecontroller.text.trim() == ""){
+
+  checkValues() async {
+    if (fullNamecontroller.text.trim() == ""
+    ){
       ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text("Full Name Required")));
     } else {
-      uploadData();
+          uploadData();
+
     }
   }
 
@@ -44,8 +48,28 @@ class _CompleteProfileState extends State<CompleteProfile> {
     UploadTask uploadTask = FirebaseStorage.instance
         .ref(widget.userModel.email.toString())
         .putFile(file);
+    uploadTask.snapshotEvents.listen((event) {
+      var progress;
+      setState(() {
+       progress= (uploadTask.snapshot.bytesTransferred.toDouble()/uploadTask.snapshot.totalBytes.toDouble())*100.roundToDouble();
+      });
+      showDialog(context: context, builder: (context){
+        return AlertDialog(content: ImageLoader(val: progress,),);
+      });
+      // setState(() {
+      //   ///
+      //
+      //   showDialog(context: context, builder: (context){
+      //     return AlertDialog(content: ImageLoader(val: (uploadTask.snapshot.bytesTransferred.toDouble()/uploadTask.snapshot.totalBytes.toDouble())*100.roundToDouble()));
+      //   });
+      //
+      //   ///
+      // });
+    });
     TaskSnapshot snapshot = await uploadTask;
+
     String imgUrl = await snapshot.ref.getDownloadURL();
+
     UserModel userModel = UserModel(
         uid: widget.userModel.uid,
         fullname: fullNamecontroller.text,
@@ -67,7 +91,10 @@ class _CompleteProfileState extends State<CompleteProfile> {
                       builder: (context) => HomeScreen(
                           user: widget.user, userModel: widget.userModel)))
             });
+
+    // await ImageLoader().toString();
   }
+
 
   @override
   Widget build(BuildContext context) {
@@ -154,6 +181,7 @@ class _CompleteProfileState extends State<CompleteProfile> {
                   height: 50,
                   child: ElevatedButton(
                       onPressed: () {
+                        bio();
                         checkValues();
                       },
                       child: const Text("Update"))),

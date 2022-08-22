@@ -10,6 +10,7 @@ import 'Models/UserModels.dart';
 import 'Pages/homeScreen.dart';
 import 'Pages/login.dart';
 import 'Test/Testing.dart';
+import 'Widgets/ProgressIndicater.dart';
 import 'Widgets/Toolbar.dart';
 
 var uuid = Uuid();
@@ -55,7 +56,7 @@ class LoggedIn extends StatelessWidget {
       title: 'Flutter ChatApp',
       theme: ThemeData(primarySwatch: Colors.purple),
       home:
-      // ToolBar()
+      // ImageLoader()
       HomeScreen(user: user, userModel: userModel),
     );
   }

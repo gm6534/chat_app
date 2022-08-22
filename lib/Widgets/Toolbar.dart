@@ -1,5 +1,11 @@
+import 'dart:convert';
+
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_quill/flutter_quill.dart';
+
+User? user=FirebaseAuth.instance.currentUser;
 
 class ToolBarWidget extends StatefulWidget {
   const ToolBarWidget({Key? key}) : super(key: key);
@@ -9,6 +15,27 @@ class ToolBarWidget extends StatefulWidget {
 }
 
 QuillController _controller = QuillController.basic();
+bio(){
+
+
+  if( _controller.plainTextEditingValue.text.toString() != null){
+    var json = jsonEncode(_controller.document.toDelta().toJson());
+    FirebaseFirestore.instance.collection("chatAppUsers").doc(user!.uid).collection("feedback").doc(user!.uid)
+        .set(
+        {"feedBack": json});
+    // return  _controller.plainTextEditingValue.text.toString();
+  }
+
+//   try{
+//
+//   }  catch(e){
+// print(e);
+//   }
+
+
+
+}
+
 
 class _ToolBarWidgetState extends State<ToolBarWidget> {
   @override

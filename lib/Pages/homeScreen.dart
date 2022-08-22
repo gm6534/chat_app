@@ -10,6 +10,7 @@ import 'package:flutter/material.dart';
 import '../Models/ChatRoomModel.dart';
 import '../Models/FirebaseHelper.dart';
 import '../Models/UserModels.dart';
+import 'Bio.dart';
 import 'chatScreen.dart';
 import 'completeProfile.dart';
 import 'login.dart';
@@ -131,7 +132,14 @@ class _HomeScreenState extends State<HomeScreen> {
                           leading: Icon(Icons.home),
                           title: Text("Home"),
                         ),
-                        // const Divider(),
+                        const Divider(),
+                        ListTile(
+                          onTap: () {
+                            Navigator.push(context, MaterialPageRoute(builder: (context)=> BioScreen()));
+                          },
+                          leading: Icon(Icons.contact_mail),
+                          title: Text("Bio"),
+                        ),
                         // ListTile(
                         //   onTap: () {
                         //     Navigator.push(
