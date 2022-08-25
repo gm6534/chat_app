@@ -7,7 +7,6 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
-
 import '../Models/UserModels.dart';
 import 'homeScreen.dart';
 
@@ -48,14 +47,41 @@ class _CompleteProfileState extends State<CompleteProfile> {
     UploadTask uploadTask = FirebaseStorage.instance
         .ref(widget.userModel.email.toString())
         .putFile(file);
+
+    ///Progress Indicator
+
     uploadTask.snapshotEvents.listen((event) {
       var progress;
+      // var fileSize;
       setState(() {
-       progress= (uploadTask.snapshot.bytesTransferred.toDouble()/uploadTask.snapshot.totalBytes.toDouble())*100.roundToDouble();
+       progress = (uploadTask.snapshot.bytesTransferred.toDouble()/uploadTask.snapshot.totalBytes.toDouble())*100.roundToDouble();
+       // fileSize = (uploadTask.snapshot.bytesTransferred.toDouble()/uploadTask.snapshot.totalBytes.toDouble()/1024);
+
       });
       showDialog(context: context, builder: (context){
-        return AlertDialog(content: ImageLoader(val: progress,),);
-      });
+        return AlertDialog(
+          elevation: 0.5,
+          backgroundColor: Colors.grey.shade200,
+          content: Container(
+          height: 120,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              ImageLoader(val: progress),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text("${(uploadTask.snapshot.bytesTransferred.toDouble() / 1048576).toStringAsPrecision(2)}", style: TextStyle(color: Colors.grey.shade400, fontStyle: FontStyle.italic),),
+                  Text(" / ${(uploadTask.snapshot.totalBytes.toDouble() / 1048576).toStringAsPrecision(2)} mb", style: TextStyle(color: Colors.grey.shade400, fontStyle: FontStyle.italic),),
+                ],
+              ),
+                Text("Uploading...", style: TextStyle(color: Colors.green, fontWeight: FontWeight.bold)),
+            ],
+          ),
+        ),
+        );
+      },
+          barrierColor: Colors.transparent);
       // setState(() {
       //   ///
       //
@@ -66,10 +92,11 @@ class _CompleteProfileState extends State<CompleteProfile> {
       //   ///
       // });
     });
+
+    ///
     TaskSnapshot snapshot = await uploadTask;
 
     String imgUrl = await snapshot.ref.getDownloadURL();
-
     UserModel userModel = UserModel(
         uid: widget.userModel.uid,
         fullname: fullNamecontroller.text,

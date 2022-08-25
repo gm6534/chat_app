@@ -135,7 +135,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         const Divider(),
                         ListTile(
                           onTap: () {
-                            Navigator.push(context, MaterialPageRoute(builder: (context)=> BioScreen()));
+                            Navigator.push(context, MaterialPageRoute(builder: (context)=> BioScreen(user: widget.user, userModel: widget.userModel,)));
                           },
                           leading: Icon(Icons.contact_mail),
                           title: Text("Bio"),

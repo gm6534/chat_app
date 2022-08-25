@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_quill/flutter_quill.dart';
 
 User? user=FirebaseAuth.instance.currentUser;
+String? feedBack;
 
 class ToolBarWidget extends StatefulWidget {
   const ToolBarWidget({Key? key}) : super(key: key);
@@ -37,7 +38,33 @@ bio(){
 }
 
 
+
 class _ToolBarWidgetState extends State<ToolBarWidget> {
+
+
+
+  getBio() async {
+    DocumentSnapshot snapshot = await FirebaseFirestore.instance
+        .collection("chatAppUsers")
+        .doc(user!.uid).collection("feedback").doc(user!.uid)
+        .get();
+    Map<String, dynamic> map = snapshot.data() as Map<String, dynamic>;
+
+    feedBack = map['feedBack'];
+    print(map['feedBack']);
+    var myJSON = jsonDecode(feedBack.toString());
+    setState(() {
+      _controller = QuillController(
+          document: Document.fromJson(myJSON),
+          selection: TextSelection.collapsed(offset: 0));
+    });
+  }
+  @override
+  void initState() {
+    getBio();
+    // TODO: implement initState
+    super.initState();
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(

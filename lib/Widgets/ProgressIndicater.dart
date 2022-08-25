@@ -4,6 +4,7 @@ import 'package:liquid_progress_indicator/liquid_progress_indicator.dart';
 
 class ImageLoader extends StatelessWidget {
   double val = 0.0;
+  // double? size;
 
   ImageLoader({required this.val});
 
